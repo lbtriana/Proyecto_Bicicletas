@@ -18,38 +18,31 @@ ruta = "https://raw.githubusercontent.com/lbtriana/Proyecto_Bicicletas/main/Seou
 df = pd.read_csv(ruta)
 
 app.layout = html.Div([
+    html.H1("Rental Bikes Dashboard", style={'textAlign': 'center'}),
+    html.Img( src='Anexos_dash/20210708000693_0.jpg',
+        style={'display': 'block', 'margin-left': 'auto', 'margin-right': 'auto', 'width': '50%'}),
     html.Div([
 
         html.Div([
             dcc.Dropdown(
-                id='xaxis-column',
-                options=[{'label': i, 'value': i} for i in available_indicators],
-                value='Fertility rate, total (births per woman)'
+                
             ),
             dcc.RadioItems(
-                id='xaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                value='Linear',
-                labelStyle={'display': 'inline-block'}
+                
             )
         ],
         style={'width': '48%', 'display': 'inline-block'}),
 
         html.Div([
             dcc.Dropdown(
-                id='yaxis-column',
-                options=[{'label': i, 'value': i} for i in available_indicators],
-                value='Life expectancy at birth, total (years)'
+                
             ),
             dcc.RadioItems(
-                id='yaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                value='Linear',
-                labelStyle={'display': 'inline-block'}
+                
             )
         ],style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
     ]),
-)]
+])
 # Para correr la app
 if __name__ == '__main__':
     app.run_server(debug=True)
