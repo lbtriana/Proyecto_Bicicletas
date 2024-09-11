@@ -154,13 +154,15 @@ app.layout = html.Div([
 
             html.Div([
                 html.Div([
-                    html.H4('PREDICTED DEMAND', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
-                    html.Div(id='output-Demand-h', value=1000, style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
+                    html.H4('PREDICTED DEMAND PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output-Demand-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}), #revisar si funciona
+                    html.H6('Confidence Interval', style={'color': 'orange', 'fontFamily': 'Helvetica','textAlign':'center', 'fontSize': 10}),
+                    html.Div(id='output-CInverval-Demand-h', style={'color': 'orange', 'fontFamily': 'Helvetica', 'textAlign':'center', 'fontSize': 12}) # traerlo con corchetes
                 ], style={'backgroundColor': '#fef0e2'}),
                 ]
             ),
  
-        ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}), #, 'backgroundColor': '#fcfcfc'
+        ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
 
         #COLUMNA 2 - COLUMNA DERECHA - ANALISIS POR DIA
         html.Div([
@@ -192,7 +194,15 @@ app.layout = html.Div([
                         value=7),
                 ], style={'display': 'inline-block', 'padding': '30px'})
             ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
-            dcc.Dropdown(),
+            html.Div([
+                html.Div([
+                    html.H4('PREDICTED DEMAND PER DAY', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output-Demand-d', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}), #revisar si funciona
+                    html.H6('Confidence Interval', style={'color': 'orange', 'fontFamily': 'Helvetica','textAlign':'center', 'fontSize': 10}),
+                    html.Div(id='output-CInverval-Demand-d', style={'color': 'orange', 'fontFamily': 'Helvetica', 'textAlign':'center', 'fontSize': 12}) # traerlo con corchetes
+                ], style={'backgroundColor': '#fef0e2'}),
+                ]
+            ),
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
     ])
 ])
