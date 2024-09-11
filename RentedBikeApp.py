@@ -105,6 +105,9 @@ app.layout = html.Div([
                         value= round(df['Temperature(C)'].mean(), 1)),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
+            ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
+            
+            html.Div([
                 #HUMIDITY
                 html.Div([
                     html.H6('Humidity %', style={'textAlign':'center'}),
@@ -128,10 +131,7 @@ app.layout = html.Div([
                         step=0.1,
                         value= round(df['Rainfall(mm)'].mean(),1)),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
-
-            ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
-            
-            html.Div([
+                
                 #HOLIDAY
                 html.Div([
                     html.H6('Holiday?', style={'textAlign':'center'}),
@@ -150,7 +150,15 @@ app.layout = html.Div([
                         value=0),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
-            ], style={'display': 'inline-block', 'padding': '30px'}),
+            ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
+
+            html.Div([
+                html.Div([
+                    html.H4('PREDICTED DEMAND', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output-Demand-h', value=1000, style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
+                ], style={'backgroundColor': '#fef0e2'}),
+                ]
+            ),
  
         ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}), #, 'backgroundColor': '#fcfcfc'
 
