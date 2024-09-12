@@ -58,7 +58,7 @@ Yes_No = [
     {'label': 'No', 'value': 0},
 ]
 
-available_var_graph = df['Indicator Name'].unique()
+available_var_graph = df.columns.tolist()
 
 variables_box_plot = [
     {'label': 'Hour', 'value': 'Hour'},
@@ -78,7 +78,7 @@ app.layout = html.Div([
         style={'display': 'block', 'margin-left': 'auto', 'margin-right': 'auto', 'width': '20%'}),
     html.Div([
         html.H3('- GRAPH CREATOR -', style={'fontFamily': 'Courier New' ,'color': '#55aaab','textAlign': 'center', 'backgroundColor': '#dff5f5'}),
-        html.H6('This section leverages historical data from the Rental Bike business for the years 2016 and 2017. It allows the user to generate boxplots to visualize the relationship between the Rented Bike Count (Y-axis) and various categorical or discrete independent variables (X-axis). The goal is to provide insights into the hourly patterns and trends in bike rentals, enabling a deeper analysis of how different factors influence rental behavior.', 
+        html.H6('This section leverages historical data from the Rental Bike business for the years 2016 and 2017. It allows the user to generate boxplots or scatter graphs to visualize the relationship between the Rented Bike Count (Y-axis) and the independent variables (X-axis). The goal is to provide insights into the hourly patterns and trends in bike rentals, enabling a deeper analysis of how different factors influence rental behavior.', 
                     style={'fontFamily': 'Helvetica' ,'color': '#7f807f','textAlign': 'left'}),
         html.Br(),
     ], style={'margin-right': '500px', 'margin-left': '500px'}),
@@ -89,7 +89,7 @@ app.layout = html.Div([
             value='Seasons'
             ),
         dcc.Graph(id='fig_graph_creator'),
-    ]),
+    ], style={'margin-right': '400px', 'margin-left': '400px'}),
     html.Div([
         #COLUMNA 1 - COLUMNA IZQUIERDA - ANALISIS PREDICCION DEMANDA POR HORA
         html.Div([
