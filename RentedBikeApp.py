@@ -57,7 +57,7 @@ app.layout = html.Div([
         #COLUMNA 1 - COLUMNA IZQUIERDA - ANALISIS POR HORA
         html.Div([
             #SECCIÓN PREDICCION DEMANDA - HORA
-            html.H3('DEMAND PREDICTION PER HOUR:', 
+            html.H3('- DEMAND PREDICTION PER HOUR -', 
                     style={'fontFamily': 'Courier New' ,'color': 'green','textAlign': 'center', 'backgroundColor': '#ebf7e8'}),
             html.H5('Please enter the values to predict demand:', 
                     style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
@@ -158,16 +158,77 @@ app.layout = html.Div([
                     html.Div(id='output-Demand-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}), #revisar si funciona
                     html.H6('Confidence Interval', style={'color': 'orange', 'fontFamily': 'Helvetica','textAlign':'center', 'fontSize': 10}),
                     html.Div(id='output-CInverval-Demand-h', style={'color': 'orange', 'fontFamily': 'Helvetica', 'textAlign':'center', 'fontSize': 12}) # traerlo con corchetes
-                ], style={'backgroundColor': '#fef0e2'}),
+                ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
                 ]
             ),
+            html.Br(),
+            
+            #SECCIÓN INCOME AND COST CALCULATOR
+            html.Div([
+                html.H3('- INCOME AND COST CALCULATOR -', 
+                    style={'fontFamily': 'Courier New' ,'color': '#4dc2a9','textAlign': 'center', 'backgroundColor': '#d7fef6'}),
+                html.H5('Please enter values:', 
+                    style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
+                html.Div([
+
+                    #HOUR RENTAL PRICE
+                    html.Div([
+                        html.H6('Hour Rental Price', style={'textAlign':'center'}),
+                        dcc.Input(
+                            id='hour_rental_price-input',
+                            type='number',
+                            min= 0,
+                            step=0.01,
+                            value= 1.25),
+                    ], style={'display': 'inline-block', 'padding': '30px'}),
+
+                    #Variable cost per rented hour
+                    html.Div([
+                        html.H6('Variable cost per rented hour', style={'textAlign':'center'}),
+                        dcc.Input(
+                            id='cost_per_rented_h-input',
+                            type='number',
+                            min= 0,
+                            step=0.01,
+                            value= 0.70),
+                    ], style={'display': 'inline-block', 'padding': '30px'}),
+
+                    #Fixed costs per hour
+                    html.Div([
+                        html.H6('Fixed costs per hour', style={'textAlign':'center'}),
+                        dcc.Input(
+                            id='fixed_costs_h-input',
+                            type='number',
+                            min= 0,
+                            step=0.01,
+                            value= 1000),
+                    ], style={'display': 'inline-block', 'padding': '30px'}),
+
+                ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
+
+                html.Div([
+                    html.H4('TOTAL INCOME PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output_total_income-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
+                ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
+                html.Br(),
+                html.Div([
+                    html.H4('TOTAL COSTS PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output_total_costs-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
+                ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
+                html.Br(),
+                html.Div([
+                    html.H4('PROFIT MARGIN PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
+                    html.Div(id='output_profit_margin-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
+                ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
+
+            ]),
  
         ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
 
         #COLUMNA 2 - COLUMNA DERECHA - ANALISIS POR DIA
         html.Div([
             #SECCIÓN PREDICCION DEMANDA - DIA
-            html.H3('DEMAND PREDICTION PER DAY:', 
+            html.H3('DEMAND PREDICTION PER DAY', 
                     style={'fontFamily': 'Courier New' ,'color': 'green','textAlign': 'center', 'backgroundColor': '#ebf7e8'}),
             html.H5('Please enter the values to predict demand:', 
                     style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
