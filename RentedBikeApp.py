@@ -17,6 +17,16 @@ server = app.server
 ruta = "https://raw.githubusercontent.com/lbtriana/Proyecto_Bicicletas/main/SeoulBikeData_utf8.csv" #ruta desde url
 df = pd.read_csv(ruta)
 
+# Modificar variables
+df['fecha'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+df['month'] = df['fecha'].dt.month
+df['year'] = df['fecha'].dt.year
+df['day_of_week'] = df['fecha'].dt.dayofweek
+df['is_holiday'] = df['Holiday'].replace({'Holiday': 1, 'No Holiday': 0})
+df['Hour_PM'] = np.where(df['Hour'] >= 12, 1, 0) #1 si es hora en la tarde 
+df['Hour_lab'] = np.where((df['Hour'] >= 8) & (df['Hour'] <= 17), 1, 0) #1 si es horario laboral
+
+
 # Para que funcionen los Dropdowns y otros items de lista
 available_hours = df['Hour'].unique()
 weekdays = [
@@ -48,15 +58,42 @@ Yes_No = [
     {'label': 'No', 'value': 0},
 ]
 
+available_var_graph = df['Indicator Name'].unique()
+
+variables_box_plot = [
+    {'label': 'Hour', 'value': 'Hour'},
+    {'label': 'Month', 'value': 'month'},
+    {'label': 'Year', 'value': 'year'},
+    {'label': 'Day of Week', 'value': 'day_of_week'},
+    {'label': 'Holiday', 'value': 'Holiday'},
+    {'label': 'PM Hour', 'value': 'Hour_PM'},
+    {'label': 'Working Day', 'value': 'Hour_lab'},
+    {'label': 'Seasons', 'value': 'Seasons'},
+]# No entiendo pq no lo pude usar...
+
 #Layout App
 app.layout = html.Div([
     html.H1("- RENTAL BIKES DASHBOARD -", style={'fontFamily': 'Courier New' ,'color': 'green','textAlign': 'center', 'backgroundColor': '#ebf7e8'}),
     html.Img(src='https://raw.githubusercontent.com/lbtriana/Proyecto_Bicicletas/main/Anexos_dash/20210708000693_0.jpg',
         style={'display': 'block', 'margin-left': 'auto', 'margin-right': 'auto', 'width': '20%'}),
     html.Div([
-        #COLUMNA 1 - COLUMNA IZQUIERDA - ANALISIS POR HORA
+        html.H3('- GRAPH CREATOR -', style={'fontFamily': 'Courier New' ,'color': '#55aaab','textAlign': 'center', 'backgroundColor': '#dff5f5'}),
+        html.H6('This section leverages historical data from the Rental Bike business for the years 2016 and 2017. It allows the user to generate boxplots to visualize the relationship between the Rented Bike Count (Y-axis) and various categorical or discrete independent variables (X-axis). The goal is to provide insights into the hourly patterns and trends in bike rentals, enabling a deeper analysis of how different factors influence rental behavior.', 
+                    style={'fontFamily': 'Helvetica' ,'color': '#7f807f','textAlign': 'left'}),
+        html.Br(),
+    ], style={'margin-right': '500px', 'margin-left': '500px'}),
+    html.Div([
+        dcc.Dropdown(
+            id='xaxis-column_box-plot',
+            options=[{'label': i, 'value': i} for i in available_var_graph], # PENDIENTE REVISAR
+            value='Seasons'
+            ),
+        dcc.Graph(id='fig_graph_creator'),
+    ]),
+    html.Div([
+        #COLUMNA 1 - COLUMNA IZQUIERDA - ANALISIS PREDICCION DEMANDA POR HORA
         html.Div([
-            #SECCIÓN PREDICCION DEMANDA - HORA
+            
             html.H3('- DEMAND PREDICTION PER HOUR -', 
                     style={'fontFamily': 'Courier New' ,'color': 'green','textAlign': 'center', 'backgroundColor': '#ebf7e8'}),
             html.H5('Please enter the values to predict demand:', 
@@ -166,9 +203,9 @@ app.layout = html.Div([
  
         ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
 
-        #COLUMNA 2 - COLUMNA DERECHA - ANALISIS POR DIA
+        #COLUMNA 2 - COLUMNA DERECHA - INCOME AND COST CALCULATOR
         html.Div([
-            #SECCIÓN PREDICCION DEMANDA - DIA
+            
             html.H3('- INCOME AND COST CALCULATOR -', 
                     style={'fontFamily': 'Courier New' ,'color': '#4dc2a9','textAlign': 'center', 'backgroundColor': '#d7fef6'}),
             html.H5('Please enter values:', 
