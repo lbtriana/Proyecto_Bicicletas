@@ -272,11 +272,38 @@ def update_graph(xaxis_column_name):
 
 
 #CALLBACK CALCULADORA INCOME & COST
-#@app.callback(
-#    [Output('output_total_income-h', 'value'),
-#     Output('output_total_costs-h', 'value'),
-#     Output()]
-#)
+@app.callback(
+    [Output('output_total_income-h', 'children'),
+     Output('output_total_costs-h', 'children'),
+     Output('output_profit_margin-h', 'children')],
+    [Input('output-Demand-h', 'children'),
+     Input('hour_rental_price-input', 'value'),
+     Input('cost_per_rented_h-input', 'value'),
+     Input('fixed_costs_h-input', 'value')]
+)
+def income_cost_calculator (demand, price, cost, fcost):
+    output_total_income = demand * price
+    output_total_costs = demand * cost
+    output_profit_margin = (output_total_income - output_total_costs)/output_total_income *100
+
+    return output_total_income, output_total_costs, output_profit_margin
+
+
+#CALLBACK DEMANDA
+@app.callback(
+    Output('output-Demand-h', 'children'),
+    [Input('hour-dropdown', 'value'),
+     Input('weekdays_h-dropdown', 'value'),
+     Input('month_h-dropdown', 'value'),
+     Input('temperature_h-input', 'value'),
+     Input('humidity_h-input', 'value'),
+     Input('rainfall_h-input', 'value'),
+     Input('holiday_h-radio', 'value'),
+     Input('winter_h-radio', 'value')]
+)
+def demand_hour(Hour, week_day, month, temperature, humidity, rainfall, holiday, winter):
+    #AQUI DEBERIA CALCULSE LA DEMANDA CON EL MODELO!!!
+    return 2000
 
 # Para correr la app
 if __name__ == '__main__':
