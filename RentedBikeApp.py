@@ -81,7 +81,7 @@ app.layout = html.Div([
             value='Seasons'
             ),
         dcc.Graph(id='fig_graph_creator'),
-    ], style={'margin-right': '400px', 'margin-left': '400px'}),
+    ], style={'margin-right': '400px', 'margin-left': '400px', 'height': 'auto'}),
     html.Div([
         #COLUMNA 1 - COLUMNA IZQUIERDA - ANALISIS PREDICCION DEMANDA POR HORA
         html.Div([
@@ -270,6 +270,13 @@ def update_graph(xaxis_column_name):
 
     return fig
 
+
+#CALLBACK CALCULADORA INCOME & COST
+#@app.callback(
+#    [Output('output_total_income-h', 'value'),
+#     Output('output_total_costs-h', 'value'),
+#     Output()]
+#)
 
 # Para correr la app
 if __name__ == '__main__':
