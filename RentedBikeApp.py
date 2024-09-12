@@ -2,6 +2,8 @@ import dash
 from dash import dcc  # dash core components
 from dash import html # dash html components 
 from dash.dependencies import Input, Output
+import matplotlib.pyplot as plt
+import seaborn as sns
 import plotly.express as px
 import pandas as pd
 import numpy as np
@@ -22,7 +24,6 @@ df['fecha'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
 df['month'] = df['fecha'].dt.month
 df['year'] = df['fecha'].dt.year
 df['day_of_week'] = df['fecha'].dt.dayofweek
-df['is_holiday'] = df['Holiday'].replace({'Holiday': 1, 'No Holiday': 0})
 df['Hour_PM'] = np.where(df['Hour'] >= 12, 1, 0) #1 si es hora en la tarde 
 df['Hour_lab'] = np.where((df['Hour'] >= 8) & (df['Hour'] <= 17), 1, 0) #1 si es horario laboral
 
@@ -60,16 +61,7 @@ Yes_No = [
 
 available_var_graph = df.columns.tolist()
 
-variables_box_plot = [
-    {'label': 'Hour', 'value': 'Hour'},
-    {'label': 'Month', 'value': 'month'},
-    {'label': 'Year', 'value': 'year'},
-    {'label': 'Day of Week', 'value': 'day_of_week'},
-    {'label': 'Holiday', 'value': 'Holiday'},
-    {'label': 'PM Hour', 'value': 'Hour_PM'},
-    {'label': 'Working Day', 'value': 'Hour_lab'},
-    {'label': 'Seasons', 'value': 'Seasons'},
-]# No entiendo pq no lo pude usar...
+variables_box_plot = ['Hour', 'month', 'year','day_of_week', 'Holiday', 'Hour_PM', 'Hour_lab', 'Seasons', 'Functioning Day']
 
 #Layout App
 app.layout = html.Div([
@@ -84,7 +76,7 @@ app.layout = html.Div([
     ], style={'margin-right': '500px', 'margin-left': '500px'}),
     html.Div([
         dcc.Dropdown(
-            id='xaxis-column_box-plot',
+            id='xaxis-column',
             options=[{'label': i, 'value': i} for i in available_var_graph], # PENDIENTE REVISAR
             value='Seasons'
             ),
@@ -264,6 +256,26 @@ app.layout = html.Div([
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
     ])
 ])
+
+#CALLBACK Y FUNCION PARA ACTUALIZAR GRAFICA - GRAPH CREATOR
+@app.callback(
+    Output('fig_graph_creator', 'figure'),
+    Input('xaxis-column', 'value'),
+)
+def update_graph(xaxis_column_name):
+    if xaxis_column_name in variables_box_plot:
+        fig = sns.boxplot(x=xaxis_column_name, y='Rented Bike Count', data=df)
+        
+    else:
+        fig = plt.scatter(df[xaxis_column_name], df['Rented Bike Count'], color='green')
+    
+    plt.title(f'Rented Bike Count x {xaxis_column_name}')
+    plt.xlabel(f'{xaxis_column_name}')
+    plt.ylabel('Rented Bike Count')
+    plt.show
+
+    return fig
+
 
 # Para correr la app
 if __name__ == '__main__':
