@@ -264,15 +264,9 @@ app.layout = html.Div([
 )
 def update_graph(xaxis_column_name):
     if xaxis_column_name in variables_box_plot:
-        fig = sns.boxplot(x=xaxis_column_name, y='Rented Bike Count', data=df)
-        
+        fig = px.box(df, x=xaxis_column_name, y="Rented Bike Count", title="Boxplot of Values by Category")
     else:
-        fig = plt.scatter(df[xaxis_column_name], df['Rented Bike Count'], color='green')
-    
-    plt.title(f'Rented Bike Count x {xaxis_column_name}')
-    plt.xlabel(f'{xaxis_column_name}')
-    plt.ylabel('Rented Bike Count')
-    plt.show
+        fig = px.scatter(df, x=xaxis_column_name, y="Rented Bike Count", title="Boxplot of Values by Category")
 
     return fig
 
