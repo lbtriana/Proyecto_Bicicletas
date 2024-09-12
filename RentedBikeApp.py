@@ -163,15 +163,18 @@ app.layout = html.Div([
             ),
             html.Br(),
             
-            #SECCIÓN INCOME AND COST CALCULATOR
-            html.Div([
-                html.H3('- INCOME AND COST CALCULATOR -', 
-                    style={'fontFamily': 'Courier New' ,'color': '#4dc2a9','textAlign': 'center', 'backgroundColor': '#d7fef6'}),
-                html.H5('Please enter values:', 
-                    style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
-                html.Div([
+ 
+        ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
 
-                    #HOUR RENTAL PRICE
+        #COLUMNA 2 - COLUMNA DERECHA - ANALISIS POR DIA
+        html.Div([
+            #SECCIÓN PREDICCION DEMANDA - DIA
+            html.H3('- INCOME AND COST CALCULATOR -', 
+                    style={'fontFamily': 'Courier New' ,'color': '#4dc2a9','textAlign': 'center', 'backgroundColor': '#d7fef6'}),
+            html.H5('Please enter values:', 
+                    style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
+            html.Div([
+                #HOUR RENTAL PRICE
                     html.Div([
                         html.H6('Hour Rental Price', style={'textAlign':'center'}),
                         dcc.Input(
@@ -203,9 +206,8 @@ app.layout = html.Div([
                             step=0.01,
                             value= 1000),
                     ], style={'display': 'inline-block', 'padding': '30px'}),
-
-                ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
-
+            ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
+            html.Div([
                 html.Div([
                     html.H4('TOTAL INCOME PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
                     html.Div(id='output_total_income-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
@@ -220,48 +222,6 @@ app.layout = html.Div([
                     html.H4('PROFIT MARGIN PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
                     html.Div(id='output_profit_margin-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}),
                 ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
-
-            ]),
- 
-        ],style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
-
-        #COLUMNA 2 - COLUMNA DERECHA - ANALISIS POR DIA
-        html.Div([
-            #SECCIÓN PREDICCION DEMANDA - DIA
-            html.H3('DEMAND PREDICTION PER DAY', 
-                    style={'fontFamily': 'Courier New' ,'color': 'green','textAlign': 'center', 'backgroundColor': '#ebf7e8'}),
-            html.H5('Please enter the values to predict demand:', 
-                    style={'fontFamily': 'Helvetica' ,'color': '#585858','textAlign': 'left'}),
-            html.H6('(make sure the input makes sense, for example that the month and is_winter make sense)', 
-                    style={'fontFamily': 'Helvetica' ,'color': '#7f807f','textAlign': 'left'}),
-            html.H6('(make sure input makes sense, for example that the month and is_winter dont contradict each other)', 
-                    style={'fontFamily': 'Helvetica' ,'color': '#7f807f','textAlign': 'left'}),
-            html.Div([
-                #WEEKDAY
-                html.Div([
-                    html.H6('Weekday', style={'textAlign':'center'}),
-                    dcc.Dropdown(
-                        id='weekdays_d-dropdown', 
-                        options=weekdays,
-                        value=3),
-                ], style={'display': 'inline-block', 'padding': '30px'}),
-
-                #MONTH
-                html.Div([
-                    html.H6('Month', style={'textAlign':'center'}),
-                    dcc.Dropdown(
-                        id='month_d-dropdown', 
-                        options=months,
-                        value=7),
-                ], style={'display': 'inline-block', 'padding': '30px'})
-            ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
-            html.Div([
-                html.Div([
-                    html.H4('PREDICTED DEMAND PER DAY', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
-                    html.Div(id='output-Demand-d', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}), #revisar si funciona
-                    html.H6('Confidence Interval', style={'color': 'orange', 'fontFamily': 'Helvetica','textAlign':'center', 'fontSize': 10}),
-                    html.Div(id='output-CInverval-Demand-d', style={'color': 'orange', 'fontFamily': 'Helvetica', 'textAlign':'center', 'fontSize': 12}) # traerlo con corchetes
-                ], style={'backgroundColor': '#fef0e2'}),
                 ]
             ),
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
