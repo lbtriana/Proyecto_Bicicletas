@@ -19,6 +19,7 @@ server = app.server
 ruta = "https://raw.githubusercontent.com/lbtriana/Proyecto_Bicicletas/main/SeoulBikeData_utf8.csv" #ruta desde url
 df = pd.read_csv(ruta)
 
+
 # Modificar variables
 df['fecha'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
 df['month'] = df['fecha'].dt.month
@@ -301,9 +302,114 @@ def income_cost_calculator (demand, price, cost, fcost):
      Input('holiday_h-radio', 'value'),
      Input('winter_h-radio', 'value')]
 )
+
+#Prep y ejecución  modelo
+ruta = "https://raw.githubusercontent.com/lbtriana/Proyecto_Bicicletas/main/SeoulBikeData_utf8.csv" #ruta desde url
+df = pd.read_csv(ruta)
+df['fecha'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+df['day'] = df['fecha'].dt.day
+df['month'] = df['fecha'].dt.month
+df['year'] = df['fecha'].dt.year
+df['day_of_week'] = df['fecha'].dt.dayofweek
+df['functioning_day'] = df['Functioning Day'].replace({'Yes': 1, 'No': 0})
+df['is_holiday'] = df['Holiday'].replace({'Holiday': 1, 'No Holiday': 0})
+pd.set_option('future.no_silent_downcasting', True) # Esta linea es para evitar un warning de perder demasiada info al hacer downcasting
+df['Hour_PM'] = np.where(df['Hour'] >= 12, 1, 0) #1 si es hora en la tarde 
+df['Hour_lab'] = np.where((df['Hour'] >= 8) & (df['Hour'] <= 17), 1, 0) #1 si es horario laboral
+
+df.info()
+
+var_continuas = [
+    'Hour', 
+    'Temperature(C)', 
+    'Humidity(%)', 
+    'Wind speed (m/s)', 
+    'Visibility (10m)', 
+    'Dew point temperature(C)', 
+    'Solar Radiation (MJ/m2)', 
+    'Rainfall(mm)', 
+    'Snowfall (cm)', 
+    'day', 
+    'month', 
+    'year', 
+    'day_of_week',
+    'fecha',
+    'Rented Bike Count'
+
+ ]
+
+var_categoricas = [
+    'Seasons', 
+    'Hour_PM', 
+    'Hour_lab',
+    'functioning_day', 
+    'is_holiday' 
+]
+
+continuas=df[var_continuas]
+categoricas=df[var_categoricas]
+df_cat = pd.get_dummies(categoricas, dtype="int64", drop_first=True)
+df = pd.concat([continuas, df_cat], axis=1)
+
+features = [
+    'Hour', 
+    'Temperature(C)', 
+    'Humidity(%)', 
+    #'Wind speed (m/s)', 
+    #'Visibility (10m)',     
+    'Rainfall(mm)', 
+    #'Snowfall (cm)', 
+    'Seasons_Winter',
+    #'Seasons_Spring',
+    #'Seasons_Summer',
+    'month', 
+    'day_of_week', 
+    'is_holiday']
+
+X = df[features]
+
+Y = df['Rented Bike Count']
+
+from sklearn.model_selection import train_test_split 
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=1)
+
+from sklearn.linear_model import LinearRegression
+
+linreg = LinearRegression()
+
+linreg.fit(X_train, Y_train)
+
+
+
 def demand_hour(Hour, week_day, month, temperature, humidity, rainfall, holiday, winter):
-    #AQUI DEBERIA CALCULSE LA DEMANDA CON EL MODELO!!!
-    return 2000
+
+    input_data = pd.DataFrame({
+        'Hour': [Hour],
+        'day_of_week': [week_day],
+        'month': [month],
+        'Temperature(C)': [temperature],
+        'Humidity(%)': [humidity],
+        'Rainfall(mm)': [rainfall],
+        'is_holiday': [holiday],
+        'Seasons_Winter': [winter]  
+    })
+
+    y_pred = linreg.predict(input_data)
+    
+    return round(y_pred[0],0)
+
+@app.callback(
+    Output('output-Demand-h', 'children'),
+    [Input('hour-dropdown', 'value'),
+     Input('weekdays_h-dropdown', 'value'),
+     Input('month_h-dropdown', 'value'),
+     Input('temperature_h-input', 'value'),
+     Input('humidity_h-input', 'value'),
+     Input('rainfall_h-input', 'value'),
+     Input('holiday_h-radio', 'value'),
+     Input('winter_h-radio', 'value')]
+)
 
 # Para correr la app
 if __name__ == '__main__':
