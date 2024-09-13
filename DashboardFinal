@@ -68,6 +68,7 @@ var_categoricas = [
 
 continuas=df[var_continuas]
 categoricas=df[var_categoricas]
+categoricas.info()
 df_cat = pd.get_dummies(categoricas, dtype="int64", drop_first=True)
 df = pd.concat([continuas, df_cat], axis=1)
 df.info()
@@ -84,7 +85,7 @@ features = [
     #'Seasons_Summer',
     'month', 
     'day_of_week', 
-    'is_holiday_1']
+    'is_holiday']
 
 
 X = df[features]
@@ -406,7 +407,7 @@ def demand_hour(Hour, week_day, month, temperature, humidity, rainfall, holiday,
         'Seasons_Winter': [winter],
         'month': [month], 
         'day_of_week': [week_day],
-        'is_holiday_1': [holiday]
+        'is_holiday': [holiday]
      
     })
 
