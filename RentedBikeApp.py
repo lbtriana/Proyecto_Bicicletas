@@ -96,6 +96,8 @@ from sklearn.linear_model import LinearRegression
 linreg = LinearRegression()
 
 linreg.fit(X_train, Y_train)
+print(linreg.intercept_)
+print(linreg.coef_)
 
 
 # Para que funcionen los Dropdowns y otros items de lista
