@@ -253,8 +253,6 @@ app.layout = html.Div([
                 html.Div([
                     html.H4('PREDICTED DEMAND PER HOUR', style={'color': 'orange', 'fontFamily': 'Courier New','textAlign':'center'}),
                     html.Div(id='output-Demand-h', style={'color': 'orange', 'fontSize': 20, 'fontFamily': 'Courier New', 'textAlign':'center', 'marginTop': 20}), #revisar si funciona
-                    html.H6('Confidence Interval', style={'color': 'orange', 'fontFamily': 'Helvetica','textAlign':'center', 'fontSize': 10}),
-                    html.Div(id='output-CInverval-Demand-h', style={'color': 'orange', 'fontFamily': 'Helvetica', 'textAlign':'center', 'fontSize': 12}) # traerlo con corchetes
                 ], style={'backgroundColor': '#fef0e2', 'margin-right': '200px', 'margin-left': '200px'}),
                 ]
             ),
@@ -374,17 +372,17 @@ def income_cost_calculator (demand, price, cost, fcost):
      Input('holiday_h-radio', 'value'),
      Input('winter_h-radio', 'value')]
 )
-def demand_hour(Hour, week_day, month, temperature, humidity, rainfall, holiday, winter):
+def demand_hour(Hour, temperature, humidity, rainfall, winter, month, week_day, holiday):
 
     input_data = pd.DataFrame({
         'Hour': [Hour],
-        'day_of_week': [week_day],
-        'month': [month],
         'Temperature(C)': [temperature],
         'Humidity(%)': [humidity],
         'Rainfall(mm)': [rainfall],
-        'is_holiday': [holiday],
-        'Seasons_Winter': [winter]  
+        'Seasons_Winter': [winter],
+        'month': [month],
+        'day_of_week': [week_day],
+        'is_holiday': [holiday],  
     })
 
     y_pred = linreg.predict(input_data)
