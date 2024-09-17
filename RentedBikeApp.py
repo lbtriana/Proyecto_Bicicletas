@@ -169,7 +169,7 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='hour-dropdown', 
                         options=[{'label': i, 'value': i} for i in available_hours],
-                        value=12)
+                        value=8)
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
                 #WEEKDAY
@@ -187,7 +187,7 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='month_h-dropdown', 
                         options=months,
-                        value=7),
+                        value=12),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
                 #TEMPERATURE
@@ -199,7 +199,8 @@ app.layout = html.Div([
                         min= df['Temperature(C)'].min(),
                         max= df['Temperature(C)'].max(),
                         step=0.1,
-                        value= round(df['Temperature(C)'].mean(), 1)),
+                        #value= round(df['Temperature(C)'].mean(), 1)),
+                        value= -7.6),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
             ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
@@ -214,7 +215,8 @@ app.layout = html.Div([
                         min= df['Humidity(%)'].min(),
                         max= df['Humidity(%)'].max(),
                         step=1,
-                        value= round(df['Humidity(%)'].mean(),0)),
+                        #value= round(df['Humidity(%)'].mean(),0)),
+                        value = 37),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
                 #RAINFALL MM
@@ -226,7 +228,8 @@ app.layout = html.Div([
                         min= df['Rainfall(mm)'].min(),
                         max= df['Rainfall(mm)'].max(),
                         step=0.1,
-                        value= round(df['Rainfall(mm)'].mean(),1)),
+                        #value= round(df['Rainfall(mm)'].mean(),1)),
+                        value = 0),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
                 
                 #HOLIDAY
@@ -244,7 +247,7 @@ app.layout = html.Div([
                     dcc.RadioItems(
                         id='winter_h-radio',
                         options=Yes_No,
-                        value=0),
+                        value=1),
                 ], style={'display': 'inline-block', 'padding': '30px'}),
 
             ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
@@ -355,6 +358,9 @@ def income_cost_calculator (demand, price, cost, fcost):
     output_total_income = demand * price
     output_total_costs = demand * cost + fcost
     output_profit_margin = (output_total_income - output_total_costs)/output_total_income *100
+    output_total_income = round(output_total_income, 2)
+    output_total_costs = round(output_total_costs, 2)
+    output_profit_margin = f"{round(output_profit_margin)} %"
 
     return output_total_income, output_total_costs, output_profit_margin
 
@@ -386,8 +392,9 @@ def demand_hour(Hour, temperature, humidity, rainfall, winter, month, week_day, 
     })
 
     y_pred = linreg.predict(input_data)
+    print(y_pred)
     
-    return round(y_pred[0],0)
+    return round(y_pred[0], 0)
 
 
 
