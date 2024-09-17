@@ -33,6 +33,9 @@ df['Hour_lab'] = np.where((df['Hour'] >= 8) & (df['Hour'] <= 17), 1, 0) #1 si es
 
 df.info()
 
+available_var_graph = df.columns.tolist()
+variables_box_plot = ['Hour', 'month', 'year','day_of_week', 'Holiday', 'Hour_PM', 'Hour_lab', 'Seasons', 'Functioning Day']
+
 var_continuas = [
     'Hour', 
     'Temperature(C)', 
@@ -63,7 +66,7 @@ var_categoricas = [
 continuas=df[var_continuas]
 categoricas=df[var_categoricas]
 df_cat = pd.get_dummies(categoricas, dtype="int64", drop_first=True)
-df = pd.concat([continuas, df_cat], axis=1)
+df_reg = pd.concat([continuas, df_cat], axis=1)
 
 features = [
     'Hour', 
@@ -80,9 +83,9 @@ features = [
     'day_of_week', 
     'is_holiday']
 
-X = df[features]
+X = df_reg[features]
 
-Y = df['Rented Bike Count']
+Y = df_reg['Rented Bike Count']
 
 from sklearn.model_selection import train_test_split 
 
@@ -126,9 +129,7 @@ Yes_No = [
     {'label': 'No', 'value': 0},
 ]
 
-available_var_graph = df.columns.tolist()
 
-variables_box_plot = ['Hour', 'month', 'year','day_of_week', 'Holiday', 'Hour_PM', 'Hour_lab', 'Seasons', 'Functioning Day']
 
 #Layout App
 app.layout = html.Div([
@@ -331,9 +332,9 @@ app.layout = html.Div([
 )
 def update_graph(xaxis_column_name):
     if xaxis_column_name in variables_box_plot:
-        fig = px.box(df, x=xaxis_column_name, y="Rented Bike Count", title="Boxplot of Values by Category")
+        fig = px.box(df, x=xaxis_column_name, y="Rented Bike Count", title=f"Boxplot {xaxis_column_name}")
     else:
-        fig = px.scatter(df, x=xaxis_column_name, y="Rented Bike Count", title="Boxplot of Values by Category")
+        fig = px.scatter(df, x=xaxis_column_name, y="Rented Bike Count", title=f"Scatter {xaxis_column_name}")
 
     return fig
 
@@ -349,8 +350,12 @@ def update_graph(xaxis_column_name):
      Input('fixed_costs_h-input', 'value')]
 )
 def income_cost_calculator (demand, price, cost, fcost):
+    demand = float(demand)
+    price = float(price)
+    cost = float(cost)
+    fcost = float(fcost)
     output_total_income = demand * price
-    output_total_costs = demand * cost
+    output_total_costs = demand * cost + fcost
     output_profit_margin = (output_total_income - output_total_costs)/output_total_income *100
 
     return output_total_income, output_total_costs, output_profit_margin
